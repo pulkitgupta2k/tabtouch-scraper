@@ -164,7 +164,7 @@ if __name__ == "__main__":
         arr.append(array['first_4_results'])
         arr.append(array['first_4_dividends'])
 
-        tabulate("matchDetails",array)
+        tabulate("matchDetail",arr)
             # print('Alt')
             # print(row.findAll('td')[4].text)
 
