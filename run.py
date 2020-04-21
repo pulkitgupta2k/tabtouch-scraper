@@ -119,23 +119,32 @@ if __name__ == "__main__":
         arr.append(array['rank_1_W'])
         arr.append(array['rank_1_P'])
 
-        arr.append(array['rank_2_num'])
-        arr.append(array['rank_2_name'])
-        arr.append(array['rank_2_rider'])
-        arr.append(array['rank_2_W'])
-        arr.append(array['rank_2_P'])
+        try:
+            arr.append(array['rank_2_num'])
+            arr.append(array['rank_2_name'])
+            arr.append(array['rank_2_rider'])
+            arr.append(array['rank_2_W'])
+            arr.append(array['rank_2_P'])
+        except:
+            pass
+        
+        try:
+            arr.append(array['rank_3_num'])
+            arr.append(array['rank_3_name'])
+            arr.append(array['rank_3_rider'])
+            arr.append(array['rank_3_W'])
+            arr.append(array['rank_3_P'])
+        except:
+            pass
 
-        arr.append(array['rank_3_num'])
-        arr.append(array['rank_3_name'])
-        arr.append(array['rank_3_rider'])
-        arr.append(array['rank_3_W'])
-        arr.append(array['rank_3_P'])
-
-        arr.append(array['rank_4_num'])
-        arr.append(array['rank_4_name'])
-        arr.append(array['rank_4_rider'])
-        arr.append(array['rank_4_W'])
-        arr.append(array['rank_4_P'])
+        try:
+            arr.append(array['rank_4_num'])
+            arr.append(array['rank_4_name'])
+            arr.append(array['rank_4_rider'])
+            arr.append(array['rank_4_W'])
+            arr.append(array['rank_4_P'])
+        except:
+            pass
 
         arr.append(array['win'])
         arr.append(array['place'])
