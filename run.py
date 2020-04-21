@@ -38,7 +38,7 @@ if __name__ == "__main__":
         details = {}
         for index,row in enumerate(rows):    
             if index%2 == 0:
-                details['sno'] = int(index/2)
+                details['sno'] = str(int(index/2))
                 row_det = row.findAll('td')
                 details['start'] = row_det[0].text
                 details['dist'] = row_det[2].text.strip()
@@ -155,7 +155,7 @@ if __name__ == "__main__":
         arr.append(array['first_4_results'])
         arr.append(array['first_4_dividends'])
 
-        tabulate("matchDetails.csv",array)
+        tabulate("matchDetails",array)
             # print('Alt')
             # print(row.findAll('td')[4].text)
 
