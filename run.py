@@ -7,7 +7,7 @@ from helper import tabulate
 
 if __name__ == "__main__":
     date = input("Enter the date: (YYYY-MM-DD) ")
-    date = "2020-04-18"
+    # date = "2020-04-18"
     html = getHTML("https://www.tabtouch.com.au:443/racing/hub?date={}".format(date))
     
     if html is None:
@@ -126,7 +126,11 @@ if __name__ == "__main__":
             arr.append(array['rank_2_W'])
             arr.append(array['rank_2_P'])
         except:
-            pass
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
         
         try:
             arr.append(array['rank_3_num'])
@@ -135,7 +139,11 @@ if __name__ == "__main__":
             arr.append(array['rank_3_W'])
             arr.append(array['rank_3_P'])
         except:
-            pass
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
 
         try:
             arr.append(array['rank_4_num'])
@@ -144,7 +152,11 @@ if __name__ == "__main__":
             arr.append(array['rank_4_W'])
             arr.append(array['rank_4_P'])
         except:
-            pass
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
+            arr.append(" ")
 
         arr.append(array['win'])
         arr.append(array['place'])
@@ -164,7 +176,7 @@ if __name__ == "__main__":
         arr.append(array['first_4_results'])
         arr.append(array['first_4_dividends'])
 
-        tabulate("matchDetail",arr)
+        tabulate(date,arr)
             # print('Alt')
             # print(row.findAll('td')[4].text)
 
