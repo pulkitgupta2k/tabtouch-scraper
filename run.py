@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from htmls import getHTML
 import re
 from pprint import pprint
-from helper import tabulate
+from helper import tabulate, get_last_line, filePresent, ins_arr, tabulate_n, delete_file
 from datetime import date as d
 from datetime import timedelta
 
@@ -11,13 +11,23 @@ if __name__ == "__main__":
     date = today.strftime("%Y-%m-%d")
     final_array = []
     headings = ['S.No.','Location Code' ,'Location' ,'Start', 'Distance', 'Race Name', 'Rank 1 Number', 'Rank 1 Name', 'Rank 1 Rider', 'Rank 1 W', 'Rank 1 P', 'Rank 2 Number', 'Rank 2 Name', 'Rank 2 Rider', 'Rank 2 W', 'Rank 2 P', 'Rank 3 Number', 'Rank 3 Name', 'Rank 3 Rider', 'Rank 3 W', 'Rank 3 P', 'Rank 4 Number', 'Rank 4 Name', 'Rank 4 Rider', 'Rank 4 W', 'Rank 4 P', 'Win', 'Place', 'Qulnella', 'Exacta', 'Trifecta', 'First 4', 'Double', 'Quaddle', 'Qulnella Results', 'Qulnella Dividends', 'Exacta Results', 'Exacta Dividends' , 'Trifecta Results', 'Trifecta Dividends', 'First 4 Results', 'First 4 Dividends']
-    tabulate(str(date),headings)
+    if (filePresent(date)):
+        print("FILE PRESENT")
+        head = get_last_line(date)
+        if(head != headings):
+            final_array = ins_arr(date)
+        else:
+            print("FILE EMPTY")
+    else:
+        print("NO FILE PRESENT. CREATING.")
+        delete_file("today")
+        # tabulate(str(date),headings)
 
     while(True):
         # date = input("Enter the date: (YYYY-MM-DD) ")
         if (date != today.strftime("%Y-%m-%d")):
             date = today.strftime("%Y-%m-%d")
-            tabulate(str(date),headings)
+            # tabulate(str(date),headings)
             print("NEW DAY CLEARED ARRAY")
             final_array = []
 
@@ -55,28 +65,36 @@ if __name__ == "__main__":
                     location = soup1.find('div', {'id': 'race-hub-results-id'}).contents[1].text.strip().split('\n')[0].strip()
                 except:
                     location = "-"
+                flag_1 = 0
+                skip = 0
                 for index,row in enumerate(rows):  
                     if index%2 == 0:
                         row_det = row.findAll('td')
                         if (row_det[1].find('a')['class'][1] == 'green'):
+                            skip = 1
                             print("GREEN")
                             continue
                         else:
-                            flag_1 = 0
                             if len(final_array)>0:
                                 for a in final_array:
                                     loc_check = a['location']
                                     s_check = a['sno']
                                     if (loc_check == location.partition(" ")[2] and s_check == str(int(index/2))):
+                                        print(loc_check + " "+str(int(s_check)+1))
                                         flag_1 = 1
                                         break
                                 if flag_1 == 1:
-                                    print('ALREADY TABBED')
+                                    # print('ALREADY TABBED')
+                                    skip = 1
+                                    flag_1 = 0
                                     continue
                                 else:
+                                    skip = 0
                                     flag = 1
+                                    print("CHANGES SENSED")
                             else:
                                 print("FINAL ARRAY EMPTY")
+                                skip = 0
                                 flag = 1
                         
                         details['location'] = location.partition(" ")[2]
@@ -86,10 +104,14 @@ if __name__ == "__main__":
                         details['dist'] = row_det[2].text.strip()
                         details['race_name'] = row_det[4].text.strip()
                     else:
-                        if (flag == 0):
+                        if (skip == 1):
+                            skip = 0
                             continue
                         two_thirds = row.find('div', {'class' : 'two-thirds'})
-                        tab = two_thirds.find('table')
+                        try:
+                            tab = two_thirds.find('table')
+                        except:
+                            continue
                         tab_res = tab.find('tbody')
                         part_dets = tab_res.findAll('tr')
                         for index, part_det in enumerate(part_dets):
@@ -149,8 +171,13 @@ if __name__ == "__main__":
                         final_array.append(details)
                         pprint(details)
                         details = {}
-        
+            if flag == 0:
+                print("NO NEW DATA SKIPPING TAB")
+                # flag = 1
+
         final_array = sorted(final_array, key=lambda k: k['start'])
+        tabulate_n("today",headings)
+        tabulate_n(str(date),headings)
         for array in final_array:
             arr = []
             arr.append(array['sno'])
@@ -222,7 +249,7 @@ if __name__ == "__main__":
             arr.append(array['trifecta_dividends'])
             arr.append(array['first_4_results'])
             arr.append(array['first_4_dividends'])
-
+            tabulate("today",arr)
             tabulate(str(date),arr)
         # data = pd,read_csv()
                 # print('Alt')
